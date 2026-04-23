@@ -53,10 +53,10 @@ cd projects/aegis-edr
 uv sync
 
 # List detection rules
-uv run python controller/main.py ruleset
+uv run controller/main.py ruleset
 
 # Analyze sample telemetry
-uv run python controller/main.py analyze samples/telemetry_sample.json
+uv run controller/main.py analyze samples/telemetry_sample.json
 ```
 
 ## Components
@@ -67,13 +67,13 @@ uv run python controller/main.py analyze samples/telemetry_sample.json
 
 ### REST API
 ```bash
-uv run python api/main.py --port 8080
+uv run api/main.py --port 8080
 # Swagger UI: http://localhost:8080/docs
 ```
 
 ### Web Dashboard
 ```bash
-uv run python dashboard/main.py --port 8000
+uv run dashboard/main.py --port 8000
 # Access: http://localhost:8000
 ```
 
@@ -117,19 +117,19 @@ PYTHONPATH=. uv run pytest tests/ -v
 
 ### Analyze Telemetry
 ```bash
-uv run python controller/main.py analyze samples/telemetry_sample.json --no-respond
+uv run controller/main.py analyze samples/telemetry_sample.json --no-respond
 ```
 
 ### Live Monitoring
 ```bash
 # File system monitoring
-uv run python controller/main.py monitor --path ~/Downloads --duration 60
+uv run controller/main.py monitor --path ~/Downloads --duration 60
 
 # Process monitoring (detects suspicious processes)
-uv run python controller/main.py watch-process --duration 30
+uv run controller/main.py watch-process --duration 30
 
 # Network connection monitoring
-uv run python controller/main.py watch-network --duration 30
+uv run controller/main.py watch-network --duration 30
 ```
 
 ### List Incidents via API
@@ -169,6 +169,7 @@ This project demonstrates:
 ## License
 
 MIT
+<<<<<<< HEAD
 
 ---
 
@@ -192,3 +193,5 @@ During my security journey, I built this detection rule engine to understand how
 - How I handled false positive tuning
 - The difference between event-based and behavioral detection
 - Mapping detection rules to attacker kill chains
+=======
+>>>>>>> d92d9f0b848b414e5ddf4881a2eb3a2ab0662bd4
