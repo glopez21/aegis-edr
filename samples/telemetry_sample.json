@@ -1,0 +1,22 @@
+[
+  {
+    "host": "lab-endpoint01",
+    "user": "analyst",
+    "process": "powershell.exe",
+    "parent": "WINWORD.EXE",
+    "command_line": "powershell.exe -enc SQB...",
+    "sha256": "aaaabbbbcccc1111222233334444555566667777888899990000aaaabbbb",
+    "integrity_level": "High",
+    "timestamp": "2026-04-18T13:30:00Z"
+  },
+  {
+    "host": "lab-endpoint02",
+    "user": "service",
+    "process": "mimikatz.exe",
+    "parent": "cmd.exe",
+    "command_line": "mimikatz.exe privilege::debug sekurlsa::logonpasswords",
+    "sha256": "bbbbccccdddd1111222233334444555566667777888899990000aaaacccc",
+    "integrity_level": "System",
+    "timestamp": "2026-04-18T13:31:00Z"
+  }
+]

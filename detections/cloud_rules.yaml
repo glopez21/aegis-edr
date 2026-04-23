@@ -1,0 +1,222 @@
+# AegisEDR CloudTrail Detection Rules
+# AWS CloudTrail specific detection rules
+
+- name: New IAM User Created
+  technique: T1078.002
+  mitre_phase: Initial Access
+  field: eventName
+  match: "CreateUser"
+  operator: equals
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: IAM User Deleted
+  technique: T1078
+  mitre_phase: Impact
+  field: eventName
+  match: "DeleteUser"
+  operator: equals
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: IAM Policy Attached to User
+  technique: T1098
+  mitre_phase: Privilege Escalation
+  field: eventName
+  match: "AttachUserPolicy"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: IAM Policy Attached to Role
+  technique: T1098
+  mitre_phase: Privilege Escalation
+  field: eventName
+  match: "AttachRolePolicy"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: New IAM Role Created
+  technique: T1098
+  mitre_phase: Privilege Escalation
+  field: eventName
+  match: "CreateRole"
+  operator: equals
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Assume Role Execution
+  technique: T1078
+  mitre_phase: Lateral Movement
+  field: eventName
+  match: "AssumeRole"
+  operator: equals
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Console Login from New Location
+  technique: T1078
+  mitre_phase: Initial Access
+  field: eventName
+  match: "ConsoleLogin"
+  operator: equals
+  severity: Low
+  priority: 40
+  enabled: true
+
+- name: MFA Disabled for User
+  technique: T1078
+  mitre_phase: Credential Access
+  field: eventName
+  match: "DisableMFADevice"
+  operator: equals
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: EC2 Instance Launched
+  technique: T1105
+  mitre_phase: Initial Access
+  field: eventName
+  match: "RunInstances"
+  operator: equals
+  severity: Low
+  priority: 30
+  enabled: true
+
+- name: EC2 Instance Terminated
+  technique: T1529
+  mitre_phase: Impact
+  field: eventName
+  match: "TerminateInstances"
+  operator: equals
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Security Group Opened to All
+  technique: T1105
+  mitre_phase: Initial Access
+  field: eventName
+  match: "AuthorizeSecurityGroupIngress"
+  operator: equals
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: VPC Flow Logs Disabled
+  technique: T1562
+  mitre_phase: Defense Evasion
+  field: eventName
+  match: "DeleteFlowLogs"
+  operator: equals
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: CloudTrail Logs Deleted
+  technique: T1562
+  mitre_phase: Defense Evasion
+  field: eventName
+  match: "DeleteTrail"
+  operator: equals
+  severity: Critical
+  priority: 95
+  enabled: true
+
+- name: Lambda Function Created
+  technique: T1106
+  mitre_phase: Execution
+  field: eventName
+  match: "CreateFunction"
+  operator: equals
+  severity: Low
+  priority: 30
+  enabled: true
+
+- name: Lambda Function Updated
+  technique: T1106
+  mitre_phase: Execution
+  field: eventName
+  match: "UpdateFunctionCode"
+  operator: equals
+  severity: Medium
+  priority: 55
+  enabled: true
+
+- name: Secrets Manager Secret Accessed
+  technique: T1002
+  mitre_phase: Credential Access
+  field: eventName
+  match: "GetSecretValue"
+  operator: equals
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: Secrets Manager Secret Created
+  technique: T1002
+  mitre_phase: Exfiltration
+  field: eventName
+  match: "PutSecretValue"
+  operator: equals
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: S3 Bucket Public Access
+  technique: T1082
+  mitre_phase: Discovery
+  field: eventName
+  match: "PutBucketAcl"
+  operator: equals
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: CloudWatch Logs Deleted
+  technique: T1562
+  mitre_phase: Defense Evasion
+  field: eventName
+  match: "DeleteLogGroup"
+  operator: equals
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Password Policy Changed
+  technique: T1098
+  mitre_phase: Credential Access
+  field: eventName
+  match: "UpdateAccountPasswordPolicy"
+  operator: equals
+  severity: Medium
+  priority: 55
+  enabled: true
+
+- name: Root Account Used
+  technique: T1078
+  mitre_phase: Initial Access
+  field: userAgent
+  match: "root"
+  operator: contains
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: API Call from Known Bad IP
+  technique: T1105
+  mitre_phase: Initial Access
+  field: sourceIPAddress
+  match: "185.220.101.,91.121.,45.33.32."
+  operator: starts_with
+  severity: Critical
+  priority: 100
+  enabled: true

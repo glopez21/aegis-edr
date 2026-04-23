@@ -1,0 +1,495 @@
+# AegisEDR Detection Rules
+# Coverage: Initial Access, Execution, Persistence, Privilege Escalation,
+# Defense Evasion, Credential Access, Discovery, Lateral Movement, Collection, Exfiltration, Impact
+
+- name: Suspicious PowerShell via Office
+  technique: T1059.001
+  mitre_phase: Execution
+  field: command_line
+  match: "powershell.exe -enc"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Credential Dumping Tool Execution
+  technique: T1003
+  mitre_phase: Credential Access
+  field: process
+  match: "mimikatz.exe"
+  operator: contains
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: LOLBin Bitsadmin Abuse
+  technique: T1197
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "bitsadmin /transfer"
+  operator: contains
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Phishing Document Execution
+  technique: T1566
+  mitre_phase: Initial Access
+  field: parent
+  match: "WINWORD.EXE,EXCEL.EXE,OUTLOOK.EXE"
+  operator: in
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: Scripting via Wscript/Cscript
+  technique: T1059.005
+  mitre_phase: Execution
+  field: process
+  match: "wscript.exe,cscript.exe"
+  operator: in
+  severity: Medium
+  priority: 50
+  enabled: true
+
+- name: PowerShell Network Download
+  technique: T1105
+  mitre_phase: Execution
+  field: command_line
+  match: "powershell.*(Invoke-WebRequest|Invoke-Expression|Start-BitsTransfer)"
+  operator: regex
+  severity: High
+  priority: 70
+  enabled: true
+
+- name: Registry Run Key Persistence
+  technique: T1547.001
+  mitre_phase: Persistence
+  field: registry_key
+  match: "HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Scheduled Task Creation
+  technique: T1053.005
+  mitre_phase: Persistence
+  field: command_line
+  match: "schtasks /create"
+  operator: contains
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: Service Installation
+  technique: T1543.003
+  mitre_phase: Persistence
+  field: command_line
+  match: "sc create"
+  operator: contains
+  severity: High
+  priority: 70
+  enabled: true
+
+- name: DLL Search Order Hijacking
+  technique: T1574.001
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: ".dll"
+  operator: contains
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: Process Injection
+  technique: T1055
+  mitre_phase: Privilege Escalation
+  field: command_line
+  match: "(OpenProcess|VirtualAllocEx|WriteProcessMemory)"
+  operator: regex
+  severity: Critical
+  priority: 90
+  enabled: true
+
+- name: Credential Hooks (LSASS)
+  technique: T1003.001
+  mitre_phase: Credential Access
+  field: process
+  match: "lsass.exe"
+  operator: equals
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: Password Spraying
+  technique: T1110.003
+  mitre_phase: Credential Access
+  field: logon_type
+  match: "network"
+  operator: equals
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Domain User Discovery
+  technique: T1087.002
+  mitre_phase: Discovery
+  field: command_line
+  match: "(net user|net group|Get-ADUser)"
+  operator: regex
+  severity: Medium
+  priority: 50
+  enabled: true
+
+- name: System Info Discovery
+  technique: T1082
+  mitre_phase: Discovery
+  field: command_line
+  match: "systeminfo"
+  operator: contains
+  severity: Low
+  priority: 30
+  enabled: true
+
+- name: SMB Lateral Movement
+  technique: T1021.002
+  mitre_phase: Lateral Movement
+  field: command_line
+  match: "net use"
+  operator: contains
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: Remote Desktop (RDP) Enable
+  technique: T1021.001
+  mitre_phase: Lateral Movement
+  field: command_line
+  match: "(reg add.*Terminal Services|Set-ItemProperty.*RDP)"
+  operator: regex
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Scheduled Task Lateral Movement
+  technique: T1053.002
+  mitre_phase: Lateral Movement
+  field: command_line
+  match: "at "
+  operator: contains
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: Email Collection
+  technique: T1560.002
+  mitre_phase: Collection
+  field: process
+  match: "( outlook.exe,thunderbird.exe)"
+  operator: in
+  severity: High
+  priority: 70
+  enabled: true
+
+- name: Screen Capture
+  technique: T1113
+  mitre_phase: Collection
+  field: process
+  match: "screenshot"
+  operator: contains
+  severity: Medium
+  priority: 50
+  enabled: true
+
+- name: Clipboard Data Theft
+  technique: T1115
+  mitre_phase: Collection
+  field: command_line
+  match: "Get-Clipboard"
+  operator: contains
+  severity: Medium
+  priority: 55
+  enabled: true
+
+- name: Exfiltration via HTTP
+  technique: T1041
+  mitre_phase: Exfiltration
+  field: destination_port
+  match: "80,443"
+  operator: in
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: Exfiltration via DNS
+  technique: T1041
+  mitre_phase: Exfiltration
+  field: destination_port
+  match: "53"
+  operator: equals
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Data Encrypted for Impact
+  technique: T1486
+  mitre_phase: Impact
+  field: command_line
+  match: "(cipher|VSSdelete|bcdedit)"
+  operator: regex
+  severity: Critical
+  priority: 95
+  enabled: true
+
+- name: Process Termination (Mass)
+  technique: T1489
+  mitre_phase: Impact
+  field: command_line
+  match: "taskkill"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Traffic Marking Detection
+  technique: T1001
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "steghide"
+  operator: contains
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Windows Defender Disable
+  technique: T1562.001
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "(Set-MpPreference|Add-MpPreference.*Disable)"
+  operator: regex
+  severity: Critical
+  priority: 95
+  enabled: true
+
+- name: Firewall Rule Modification
+  technique: T1562.002
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "netsh advfirewall"
+  operator: contains
+  severity: High
+  priority: 70
+  enabled: true
+
+- name: Suspicious Binary Location
+  technique: T1027
+  mitre_phase: Defense Evasion
+  field: path
+  match: "(AppData\\\\Temp|%TEMP%|\\\\download)"
+  operator: regex
+  severity: Medium
+  priority: 55
+  enabled: true
+
+# Additional Techniques (20+)
+
+- name: Remote Desktop Protocol Usage
+  technique: T1021.001
+  mitre_phase: Lateral Movement
+  field: process
+  match: "mstsc.exe"
+  operator: contains
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Windows Admin Shares Access
+  technique: T1021.002
+  mitre_phase: Lateral Movement
+  field: command_line
+  match: "\\\\\\\\.*\\\\IPC\\$"
+  operator: regex
+  severity: Medium
+  priority: 55
+  enabled: true
+
+- name: WMI Process Execution
+  technique: T1047
+  mitre_phase: Execution
+  field: process
+  match: "wmiprvse.exe"
+  operator: contains
+  severity: Low
+  priority: 40
+  enabled: true
+
+- name: Service Creation
+  technique: T1543
+  mitre_phase: Persistence
+  field: event_id
+  match: "7045"
+  operator: equals
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: User Added to Local Group
+  technique: T1098
+  mitre_phase: Privilege Escalation
+  field: event_id
+  match: "4732"
+  operator: equals
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Failed Logon Multiple
+  technique: T1110
+  mitre_phase: Credential Access
+  field: event_id
+  match: "4625"
+  operator: equals
+  severity: Low
+  priority: 40
+  enabled: true
+
+- name: Password Reset
+  technique: T1098
+  mitre_phase: Credential Access
+  field: event_id
+  match: "4724"
+  operator: equals
+  severity: Medium
+  priority: 55
+  enabled: true
+
+- name: Account Disabled
+  technique: T1098
+  mitre_phase: Persistence
+  field: event_id
+  match: "4725"
+  operator: equals
+  severity: Low
+  priority: 35
+  enabled: true
+
+- name: NTDS File Access
+  technique: T1003
+  mitre_phase: Credential Access
+  field: path
+  match: "ntds.dit"
+  operator: contains
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: LSASS Access
+  technique: T1003
+  mitre_phase: Credential Access
+  field: process
+  match: "lsass.exe"
+  operator: contains
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: RDP Shadowing
+  technique: T1021.001
+  mitre_phase: Lateral Movement
+  field: command_line
+  match: "shadow"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: DNS Query to Suspicious Domain
+  technique: T1071
+  mitre_phase: Exfiltration
+  field: query
+  match: "(.tk|.ml|.ga|.cf|.gq|.xyz)"
+  operator: regex
+  severity: Medium
+  priority: 60
+  enabled: true
+
+- name: Encoded PowerShell
+  technique: T1027
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "-enc|-encodedcommand"
+  operator: contains
+  severity: High
+  priority: 80
+  enabled: true
+
+- name: Disable Windows Firewall
+  technique: T1562
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "netsh advfirewall set"
+  operator: contains
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: Screen Capture
+  technique: T1113
+  mitre_phase: Collection
+  field: process
+  match: "screenshot"
+  operator: contains
+  severity: Low
+  priority: 40
+  enabled: true
+
+- name: Clipboard Data Access
+  technique: T1115
+  mitre_phase: Collection
+  field: process
+  match: "GetClipboardData"
+  operator: contains
+  severity: Low
+  priority: 35
+  enabled: true
+
+- name: Keylogging
+  technique: T1056
+  mitre_phase: Collection
+  field: process
+  match: "keylog"
+  operator: contains
+  severity: Critical
+  priority: 100
+  enabled: true
+
+- name: Disabled Security Tool
+  technique: T1562
+  mitre_phase: Defense Evasion
+  field: command_line
+  match: "(Disable-WindowsOptionalFeature|Set-MpPreference)"
+  operator: regex
+  severity: High
+  priority: 85
+  enabled: true
+
+- name: New Service Executed
+  technique: T1543
+  mitre_phase: Execution
+  field: event_id
+  match: "7045"
+  operator: equals
+  severity: High
+  priority: 75
+  enabled: true
+
+- name: IIS Webshell
+  technique: T1505
+  mitre_phase: Persistence
+  field: path
+  match: "(.asp|.aspx|.php)"
+  operator: regex
+  severity: Critical
+  priority: 95
+  enabled: true
