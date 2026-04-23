@@ -169,3 +169,26 @@ This project demonstrates:
 ## License
 
 MIT
+
+---
+
+## Portfolio Description
+
+**Custom detection rule engine for hands-on security learning**
+
+During my security journey, I built this detection rule engine to understand how alerts are created and how attackers behave. It became a practical way to study the MITRE ATT&CK framework while building real, working detection logic.
+
+**What it demonstrates:**
+- **Detection engineering fundamentals** - I know how SIEM rules work, not just how to read alerts
+- **MITRE ATT&CK knowledge** - 50+ detection rules mapped to real attack techniques
+- **Cloud security awareness** - AWS CloudTrail rules for IAM abuse, suspicious API activity
+- **Self-directed learning** - I took initiative to build tools that help me understand the "why" behind alerts
+
+**Conversation starter for interviews:**
+> "I built AegisEDR to deepen my understanding of how detection works. Rather than just responding to alerts, I wanted to understand the logic behind them. This project shows I don't just consume alerts—I understand how they're created. The AWS CloudTrail rules demonstrate cloud security monitoring capability, which is in high demand."
+
+**Technical details I can discuss:**
+- Why certain rules use regex vs. exact matching
+- How I handled false positive tuning
+- The difference between event-based and behavioral detection
+- Mapping detection rules to attacker kill chains
